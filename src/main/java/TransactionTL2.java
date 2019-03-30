@@ -12,20 +12,28 @@ public class TransactionTL2 implements Transaction {
     public List<RegisterTL2> lrs;
     public List<RegisterTL2> lcx;
     public AtomicInteger birthDate = new AtomicInteger();
-    private AtomicInteger clock;
-    private boolean passTrycommit = false;
-    private boolean begin =false;
+    public AtomicInteger clock;
+    private boolean passTrycommit;
+    private boolean begin ;
 
     public TransactionTL2(AtomicInteger clockbis){
 
+        lws= new ArrayList<RegisterTL2>();
+        lrs= new ArrayList<RegisterTL2>();
+        lcx= new ArrayList<RegisterTL2>();
         this.clock = clockbis;
+        passTrycommit = false;
+        this.begin = false;
     }
 
 
     public void begin() {
-        lws = new ArrayList<RegisterTL2>();
-        lrs = new ArrayList<RegisterTL2>();
-        lcx = new ArrayList<RegisterTL2>();
+        lws.clear() /*= new ArrayList<RegisterTL2>()*/;
+        lrs.clear() /*= new ArrayList<RegisterTL2>()*/;
+        lcx.clear() /*= new ArrayList<RegisterTL2>()*/;
+        lws= new ArrayList<RegisterTL2>();
+        lrs= new ArrayList<RegisterTL2>();
+        lcx= new ArrayList<RegisterTL2>();
         //re-initialize local variabes;
        /* lws.clear();
         lrs.clear();
@@ -57,18 +65,25 @@ public class TransactionTL2 implements Transaction {
                 for (RegisterTL2 Y : temp) {
                     Y.lock.unlock();
                 }
-
+                //System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ================= "+begin+" Nom de la transaction = "+this);
                 throw new AbortException();
+
             }
         }
 
+        //System.out.println("Clock ="+clock.get());
         int commitDate = clock.getAndIncrement();
 
+        for (RegisterTL2 X : lws) {
+
+            X.setValue(lcx.get(lcx.indexOf(X)).getValue());
+            X.date.set(commitDate);
+        }/*
         for (int i =0;i<lws.size(); ++i) {
-            System.out.println("Valeur de lcx ="+lcx.get(lcx.indexOf(lws.get(i))).getValue()+"taille de lcx ="+lcx.size());
+            System.out.println("Valeur de lcx ="+lcx.get(lcx.indexOf(lws.get(i))).getValue()+" Taille de lcx ="+lcx.size());
             lws.get(i).setValue(lcx.get(lcx.indexOf(lws.get(i))).getValue());
             lws.get(i).date.set(commitDate);
-        }
+        }*/
         //release all the locks;
         /*for (RegisterTL2 X : lrs) {
             X.lock.unlock();
