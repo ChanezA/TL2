@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RegisterTL2 implements Register {
 
     public Lock lock = new ReentrantLock();
-    private int value;
+    private volatile int value;
     public AtomicInteger date = new AtomicInteger();
 
     public RegisterTL2(){
@@ -18,13 +18,15 @@ public class RegisterTL2 implements Register {
 
     public void write(TransactionTL2 t, int v) throws AbortException {
 
-        if(!(t.lcx.equals(this))/*no local copy lcx of X*/){
+        if(!(t.lcx.contains(this))/*no local copy lcx of X*/){
             //allocate local space lcx for a copy
-           // System.out.println("tu passe là pd ?");
+          // System.out.println("tu passe là pd ?");
             t.lcx.add(new RegisterTL2());
         }
-        t.lcx.get(t.lcx.size()-1).setValue(v);
-        t.lcx.get(t.lcx.size()-1).date = t.birthDate;
+       // System.out.println("tu birthDate"+t.birthDate);
+
+        t.lcx.get(t.lcx.indexOf(this)).setValue(v);
+        t.lcx.get(t.lcx.indexOf(this)).date = t.birthDate;
        // System.out.println("Valeur de lcx mais au moment d'ajouter "+v+" à celui ci avec une valeur  = "+t.lcx.get(t.lcx.size()-1).value);
         t.lws.add(this);
     }
@@ -36,10 +38,10 @@ public class RegisterTL2 implements Register {
         }else{
             t.lcx.add(this/*.clone()*/);
             t.lrs.add(this);
-            if (t.lcx.get(t.lcx.size()-1).date.get() > t.birthDate.get()){
+            if (t.lcx.get(t.lcx.indexOf(this)).date.get() > t.birthDate.get()){
                 throw new AbortException();
             }else{
-                return t.lcx.get(t.lcx.size()-1).value;
+                return t.lcx.get(t.lcx.indexOf(this)).value;
             }
         }
     }

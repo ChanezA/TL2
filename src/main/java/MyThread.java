@@ -18,16 +18,17 @@ public class MyThread extends Thread {
 
     while(!t.isCommited()){
         try {
-            System.out.println("Valeur du thread ="+this+" valeur de iscommited ="+t.isCommited());
+
             t.begin();
             //int a = r1.read((TransactionTL2) t);
             r1.write((TransactionTL2)t,r1.read((TransactionTL2) t)+r2.read((TransactionTL2) t));
-            System.out.println("Valeur de R1 ="+(r1.read((TransactionTL2) t)+r2.read((TransactionTL2) t)));
+            //System.out.println("Valeur de R1 ="+(r1.read((TransactionTL2) t)+r2.read((TransactionTL2) t)));
 
             t.try_to_commit();
+            System.out.println("Valeur du thread ="+this+" valeur de iscommited ="+t.isCommited());
             //System.out.println("Valeur de R1 Apres ="+r1.read((TransactionTL2)t));
         } catch (AbortException e) {
-
+                e.printStackTrace();
         }
      }
   }

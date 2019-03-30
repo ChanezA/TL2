@@ -12,7 +12,7 @@ public class Main {
             AtomicInteger clock = new AtomicInteger();
             clock.set(0);
             List<Thread> threads = new ArrayList<Thread>();
-            int nbthread = 10;
+            int nbthread = 300;
 
             for(int j =0;j<nbthread;++j){
                 threads.add(new MyThread(clock,r1,r2));
@@ -26,9 +26,9 @@ public class Main {
 
             for(int j =0;j<nbthread;++j){
 
-                System.out.println("Combien dans la boucle le j ? = "+j);
+                //System.out.println("Combien dans la boucle le j ? = "+j);
                 threads.get(j).run();
-                System.out.println("Dans le for la valeur de R1 = "+((RegisterTL2) r1).getValue());
+               // System.out.println("Dans le for la valeur de R1 = "+((RegisterTL2) r1).getValue());
 
             }
             System.out.println("LA VALEUR DE R1 = "+((RegisterTL2) r1).getValue());
