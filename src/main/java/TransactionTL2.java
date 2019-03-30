@@ -54,6 +54,16 @@ public class TransactionTL2 implements Transaction {
         }
 
 
+        if(clock.get()>birthDate.get() ){
+            //release all the locks;
+
+            for (RegisterTL2 Y : temp) {
+                Y.lock.unlock();
+            }
+            //System.out.println("Thread = "+Thread.currentThread());
+            throw new AbortException();
+
+        }
         for (RegisterTL2 X : lrs) {
             if(X.date>birthDate.get() ){
                 //release all the locks;

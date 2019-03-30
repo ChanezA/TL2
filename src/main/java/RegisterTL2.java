@@ -1,5 +1,4 @@
 
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,7 +19,7 @@ public class RegisterTL2 implements Register {
         this.value = 1;
     }
 
-    public void write(TransactionTL2 t, int v) throws AbortException {
+    public void write(TransactionTL2 t, int v){
 
 
         lcx.set(v);
