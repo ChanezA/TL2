@@ -1,4 +1,3 @@
-import com.sun.org.apache.xerces.internal.dom.AbortException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ public class Main {
             AtomicInteger clock = new AtomicInteger();
             clock.set(0);
             List<Thread> threads = new ArrayList<Thread>();
-            int nbthread = 30;
+            int nbthread = 100;
 
             for(int j =0;j<nbthread;++j){
                 threads.add(new MyThread(clock,r1,r2));
@@ -26,9 +25,11 @@ public class Main {
 
             for(int j =0;j<nbthread;++j){
 
-                //System.out.println("Combien dans la boucle le j ? = "+j);
-                threads.get(j).run();
-               // System.out.println("Dans le for la valeur de R1 = "+((RegisterTL2) r1).getValue());
+                try {
+                    threads.get(j).join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
             System.out.println("LA VALEUR DE R1 = "+((RegisterTL2) r1).getValue());
