@@ -11,7 +11,7 @@ public class Main {
             AtomicInteger clock = new AtomicInteger();
             clock.set(0);
             List<Thread> threads = new ArrayList<Thread>();
-            int nbthread = 100;
+            int nbthread = 5000;
 
             for(int j =0;j<nbthread;++j){
                 threads.add(new MyThread(clock,r1,r2));

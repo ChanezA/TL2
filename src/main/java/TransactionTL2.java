@@ -71,19 +71,20 @@ public class TransactionTL2 implements Transaction {
                 for (RegisterTL2 Y : temp) {
                     Y.lock.unlock();
                 }
-                System.out.println("Thread = "+Thread.currentThread());
+                //System.out.println("Thread = "+Thread.currentThread());
                 throw new AbortException();
 
             }
         }
 
-        int commitDate = clock.getAndIncrement();
+        //int commitDate = ;
 
         for (RegisterTL2 X : lws) {
 
             X.setValue(X.lcx.get());
-            X.date=commitDate;
+            X.date=clock.get();
         }
+        int commitDate = clock.getAndIncrement();
 
         for (RegisterTL2 Y : temp) {
             Y.lock.unlock();

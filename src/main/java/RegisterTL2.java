@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class RegisterTL2 implements Register {
 
-    public Lock lock = new ReentrantLock();
+    public Lock lock = new ReentrantLock(true);
     private volatile int value;
     public volatile int date ;
     public ThreadLocal<Integer> lcx;
