@@ -21,7 +21,7 @@ public class RegisterTL2 implements Register {
 
     public void write(TransactionTL2 t, int v){
 
-
+        ldate.set(t.clock.get());
         lcx.set(v);
         t.lws.add(this);
     }
